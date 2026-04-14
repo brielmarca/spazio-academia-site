@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd spazio-backend && npm install",
-  "startCommand": "cd spazio-backend && npx ts-node --project . src/main/server.ts",
+  "buildCommand": "cd spazio-backend && npm install && npx prisma generate",
+  "startCommand": "cd spazio-backend && npx prisma db push && npx ts-node --project . src/main/server.ts",
   "healthcheckPath": "/",
   "healthcheckInterval": 30,
   "region": "sao-paulo"

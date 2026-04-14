@@ -5,8 +5,9 @@
   "main": "dist/main/server.js",
   "scripts": {
     "dev": "ts-node-dev --project . src/main/server.ts",
-    "build": "npx prisma generate && tsc",
-    "start": "npx prisma db push && npx ts-node --project . src/main/server.ts",
+    "build": "prisma generate && tsc",
+    "deploy": "prisma db push && ts-node --project . src/main/server.ts",
+    "start": "ts-node --project . src/main/server.ts",
     "seed": "ts-node --project . prisma/seed.ts"
   },
   "prisma": {
