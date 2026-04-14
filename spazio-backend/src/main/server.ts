@@ -26,7 +26,8 @@ const PORT = process.env.PORT || 3001;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // Middleware JSON - deve vir antes do CORS
-app.use(express.json({ type: 'application/json' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Middleware CORS
 app.use((req, res, next) => {
