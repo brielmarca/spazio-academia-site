@@ -9,6 +9,7 @@ datasource db {
 
 enum Role {
   ADMIN
+  PROFESSOR
   USER
   LEAD
 }
@@ -26,6 +27,20 @@ enum LeadStatus {
   CONTACTED
   CONVERTED
   LOST
+}
+
+enum HrhStatus {
+  AVAILABLE
+  RESERVED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REFUNDED
 }
 
 enum AppointmentStatus {
@@ -52,6 +67,9 @@ model User {
   // Relacionamentos
   subscriptions Subscription[]
   appointments  Appointment[]
+  hrhs          Hrh[]          @relation("ProfessorHorarios")
+  hrhsReservados Hrh[]         @relation("ClienteHorarios")
+  contratos     Contract[]     @relation("ClienteContratos")
 }
 
 model Plan {
@@ -152,4 +170,72 @@ model Lead {
   status    LeadStatus @default(NEW)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+}
+
+// ============================================
+// HRH - Horários Disponíveis
+// ============================================
+
+model Hrh {
+  id          Int       @id @default(autoincrement())
+  professorId Int
+  dataHora    DateTime  // Data e hora do horário
+  duracao     Int       @default(60) // Duração em minutos
+  status      HrhStatus @default(AVAILABLE)
+  clienteId   Int?      // Cliente que reservou (se reservado)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  professor   User      @relation("ProfessorHorarios", fields: [professorId], references: [id], onDelete: Cascade)
+  cliente     User?     @relation("ClienteHorarios", fields: [clienteId], references: [id], onDelete: SetNull)
+
+  @@index([professorId])
+  @@index([status])
+  @@index([dataHora])
+}
+
+// ============================================
+// CONTRATOS
+// ============================================
+
+model Contract {
+  id             Int        @id @default(autoincrement())
+  clienteId      Int
+  horasTotais    Int        // Total de horas do plano
+  horasUsadas    Int        @default(0) // Horas já utilizadas
+  horasDisponiveis Int      // Horas disponíveis (horasTotais - horasUsadas)
+  status         String     @default("ACTIVE") // ACTIVE, CANCELLED, EXPIRED
+  dataInicio     DateTime   @default(now())
+  dataFim        DateTime?  // Data de término do contrato
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  cliente        User       @relation("ClienteContratos", fields: [clienteId], references: [id], onDelete: Cascade)
+  pagamentos     Payment[]  @relation("ContractPayments")
+
+  @@index([clienteId])
+  @@index([status])
+}
+
+// ============================================
+// PAGAMENTOS
+// ============================================
+
+model Payment {
+  id             Int          @id @default(autoincrement())
+  contractId     Int
+  valor          Float
+  plano          String       // Nome do plano
+  status         PaymentStatus @default(PENDING)
+  dataPagamento  DateTime?
+  dataVencimento DateTime
+  metodoPagamento String?     // PIX, CARD, BOLETO
+  transacaoId    String?      // ID da transação no gateway
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  contract       Contract     @relation("ContractPayments", fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId])
+  @@index([status])
 }

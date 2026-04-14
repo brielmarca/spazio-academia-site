@@ -1,7 +1,5 @@
 // src/services/api.ts - Serviço principal de API
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-
 // Helper para headers com auth
 function getHeaders(): HeadersInit {
   const headers: HeadersInit = {
@@ -20,7 +18,7 @@ function getHeaders(): HeadersInit {
  * Criar lead via formulário de contato
  */
 export async function criarLead(lead: { nome: string; email: string; telefone?: string }) {
-  const response = await fetch(`${API_BASE_URL}/leads`, {
+  const response = await fetch('/api/leads', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(lead),
@@ -36,12 +34,13 @@ export async function criarLead(lead: { nome: string; email: string; telefone?: 
 
 /**
  * Requisição genérica com autenticação
+ * Usa proxy do Vite - todas as req vão para /api/*
  */
 export async function apiRequest(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<any> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `/api${endpoint}`;
 
   const config: RequestInit = {
     ...options,

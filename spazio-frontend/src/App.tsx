@@ -10,6 +10,8 @@ import Plans from "./pages/Plans.tsx";
 import Trainers from "./pages/Trainers.tsx";
 import TrainerDetail from "./pages/TrainerDetail.tsx";
 import MyAppointments from "./pages/MyAppointments.tsx";
+import AdminDashboard from "./pages/AdminDashboard.tsx";
+import ProfessorDashboard from "./pages/ProfessorDashboard.tsx";
 import { PrivateRoute } from "@/components/PrivateRoute";
 
 const queryClient = new QueryClient();
@@ -53,6 +55,22 @@ const App = () => (
             element={
               <PrivateRoute>
                 <MyAppointments />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/painel-professor"
+            element={
+              <PrivateRoute>
+                <ProfessorDashboard />
               </PrivateRoute>
             }
           />

@@ -9,6 +9,10 @@ import { setupSubscriptionRoutes } from './routes/subscription.routes';
 import { setupWebhookRoutes } from './routes/webhook.routes';
 import { setupTrainerRoutes } from './routes/trainer.routes';
 import { setupAppointmentRoutes } from './routes/appointment.routes';
+import { setupHrhRoutes } from './routes/hrh.routes';
+import { setupContractRoutes } from './routes/contract.routes';
+import { setupPaymentRoutes } from './routes/payment.routes';
+import { setupUserRoutes } from './routes/user.routes';
 import { seedDefaultPlans } from './services/plan.service';
 import { seedDefaultTrainers } from './services/trainer.service';
 
@@ -20,6 +24,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+// Middleware JSON - deve vir antes do CORS
+app.use(express.json({ type: 'application/json' }));
 
 // Middleware CORS
 app.use((req, res, next) => {
@@ -41,16 +48,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   next();
-});
-
-// Middleware JSON - usar raw body para webhooks
-app.use((req, res, next) => {
-  if (req.originalUrl === '/webhook/abacatepay') {
-    // Para webhooks, usar raw body para validação de assinatura
-    next();
-  } else {
-    express.json()(req, res, next);
-  }
 });
 
 // Rota principal
@@ -76,6 +73,10 @@ setupSubscriptionRoutes(app);
 setupWebhookRoutes(app);
 setupTrainerRoutes(app);
 setupAppointmentRoutes(app);
+setupHrhRoutes(app);
+setupContractRoutes(app);
+setupPaymentRoutes(app);
+setupUserRoutes(app);
 
 // Inicializar banco e servidor
 app.listen(PORT, async () => {

@@ -6,7 +6,7 @@ export interface User {
   name: string;
   email: string;
   phone?: string;
-  role: 'USER' | 'ADMIN' | 'LEAD';
+  role: 'USER' | 'ADMIN' | 'PROFESSOR' | 'LEAD';
 }
 
 export interface AuthResponse {
@@ -30,7 +30,7 @@ export interface RegisterInput {
  * Registrar novo usuário
  */
 export async function register(data: RegisterInput): Promise<AuthResponse> {
-  const response = await fetch('http://localhost:3001/api/auth/register', {
+  const response = await fetch('/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -50,7 +50,7 @@ export async function register(data: RegisterInput): Promise<AuthResponse> {
  * Login de usuário
  */
 export async function login(data: LoginInput): Promise<AuthResponse> {
-  const response = await fetch('http://localhost:3001/api/auth/login', {
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -108,6 +108,14 @@ export function isAuthenticated(): boolean {
 export function isAdmin(): boolean {
   const user = getCurrentUser();
   return user?.role === 'ADMIN';
+}
+
+/**
+ * Verificar se é professor
+ */
+export function isProfessor(): boolean {
+  const user = getCurrentUser();
+  return user?.role === 'PROFESSOR';
 }
 
 /**

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, User, LogOut, CreditCard, Users, Calendar } from "lucide-react";
+import { Menu, X, User, LogOut, CreditCard, Users, Calendar, LayoutDashboard, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { isAuthenticated, getCurrentUser, logout } from "@/services/auth";
+import { isAuthenticated, getCurrentUser, logout, isAdmin, isProfessor } from "@/services/auth";
 
 const publicLinks = [
   { label: "Início", href: "#inicio" },
@@ -78,6 +78,28 @@ const Navbar = () => {
                 >
                   <Calendar size={16} />
                   Agendamentos
+                </Link>
+              </li>
+            )}
+            {loggedIn && isProfessor() && (
+              <li>
+                <Link
+                  to="/painel-professor"
+                  className="flex items-center gap-2 font-body text-sm font-medium text-spazio-gold hover:text-primary transition-colors"
+                >
+                  <BookOpen size={16} />
+                  Meu Painel
+                </Link>
+              </li>
+            )}
+            {loggedIn && isAdmin() && (
+              <li>
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 font-body text-sm font-medium text-spazio-gold hover:text-primary transition-colors"
+                >
+                  <LayoutDashboard size={16} />
+                  Admin
                 </Link>
               </li>
             )}
@@ -171,6 +193,30 @@ const Navbar = () => {
                   >
                     <Calendar size={18} />
                     Agendamentos
+                  </Link>
+                </li>
+              )}
+              {loggedIn && isProfessor() && (
+                <li>
+                  <Link
+                    to="/painel-professor"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 font-body text-base text-spazio-gold hover:text-primary transition-colors"
+                  >
+                    <BookOpen size={18} />
+                    Meu Painel
+                  </Link>
+                </li>
+              )}
+              {loggedIn && isAdmin() && (
+                <li>
+                  <Link
+                    to="/admin"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 font-body text-base text-spazio-gold hover:text-primary transition-colors"
+                  >
+                    <LayoutDashboard size={18} />
+                    Admin
                   </Link>
                 </li>
               )}
