@@ -1,7 +1,7 @@
 // src/services/auth.ts
 import { apiRequest } from './api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spazio-academia-site-3.onrender.com';
 
 export interface User {
   id: number;

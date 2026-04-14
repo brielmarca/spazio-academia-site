@@ -1,6 +1,6 @@
 // src/services/api.ts - Serviço principal de API
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://spazio-academia-site-3.onrender.com';
 
 // Helper para headers com auth
 function getHeaders(): HeadersInit {
