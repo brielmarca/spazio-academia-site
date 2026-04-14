@@ -38,7 +38,7 @@ app.use((req, res, next) => {
     'http://127.0.0.1:8080',
     'http://localhost:8081',
     'http://127.0.0.1:8081',
-    'https://spazio-academia-site.vercel.app',
+    'https://spazio-academia-site-8axb.vercel.app',
     'https://spazio-academia-site-*.vercel.app',
   ];
   const origin = req.headers.origin;
