@@ -5,8 +5,8 @@
   "main": "dist/main/server.js",
   "scripts": {
     "dev": "ts-node-dev --project . src/main/server.ts",
-    "build": "npx prisma generate --schema=./spazio-backend/prisma/schema.prisma && npx tsc -p spazio-backend/tsconfig.json",
-    "start": "node spazio-backend/dist/main/server.js",
+    "build": "npm install && npx prisma generate --schema=./prisma/schema.prisma && npx tsc",
+    "start": "node dist/main/server.js",
     "seed": "ts-node --project . prisma/seed.ts"
   },
   "prisma": {
