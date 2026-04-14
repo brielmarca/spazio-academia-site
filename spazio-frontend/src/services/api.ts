@@ -1,6 +1,6 @@
 // src/services/api.ts - Serviço principal de API
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 // Helper para headers com auth
 function getHeaders(): HeadersInit {
@@ -54,7 +54,6 @@ export async function apiRequest(
   const response = await fetch(url, config);
 
   if (response.status === 401) {
-    // Token expirado ou inválido
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.href = '/login';
@@ -69,7 +68,6 @@ export async function apiRequest(
   return response.json();
 }
 
-// Exportar api como objeto para compatibilidade
 export const api = {
   criarLead,
   apiRequest,
