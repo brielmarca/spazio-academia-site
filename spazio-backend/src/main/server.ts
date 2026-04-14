@@ -1,6 +1,7 @@
 // src/main/server.ts
 import express from 'express';
 import dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client';
 import { setupLeadRoutes } from './routes/lead.routes';
 import { setupAuthRoutes } from './routes/auth.routes';
 import { setupPlanRoutes } from './routes/plan.routes';
@@ -10,6 +11,8 @@ import { setupTrainerRoutes } from './routes/trainer.routes';
 import { setupAppointmentRoutes } from './routes/appointment.routes';
 import { seedDefaultPlans } from './services/plan.service';
 import { seedDefaultTrainers } from './services/trainer.service';
+
+const prisma = new PrismaClient();
 
 // Carrega as variáveis de ambiente do arquivo .env
 dotenv.config();
@@ -74,22 +77,26 @@ setupWebhookRoutes(app);
 setupTrainerRoutes(app);
 setupAppointmentRoutes(app);
 
-// Inicializar servidor
+// Inicializar banco e servidor
 app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📚 API Documentation: http://localhost:${PORT}/`);
 
-  // Seed de planos padrão (apenas em desenvolvimento)
+  // Sincronizar banco de dados
   try {
+    await prisma.$connect();
+    console.log('✅ Banco de dados conectado');
+    
+    // Executar seed
     await seedDefaultPlans();
-  } catch (error) {
-    console.error('Erro ao criar planos padrão:', error);
-  }
-
-  // Seed de professores padrão
-  try {
     await seedDefaultTrainers();
   } catch (error) {
-    console.error('Erro ao criar professores padrão:', error);
+    console.error('❌ Erro ao conectar banco:', error);
   }
+});
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  await prisma.$disconnect();
+  process.exit();
 });
