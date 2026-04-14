@@ -26,9 +26,13 @@ app.use((req, res, next) => {
     'http://127.0.0.1:5173',
     'http://localhost:8080',
     'http://127.0.0.1:8080',
+    'http://localhost:8081',
+    'http://127.0.0.1:8081',
+    'https://spazio-academia-site.vercel.app',
+    'https://spazio-academia-site-*.vercel.app',
   ];
   const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && allowedOrigins.some(o => o.includes('vercel') ? origin.includes('vercel') : origin === o)) {
     res.header('Access-Control-Allow-Origin', origin);
   }
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

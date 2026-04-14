@@ -1,0 +1,13 @@
+{
+  "name": "spazio-academia-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd spazio-backend && npm run dev",
+    "build": "cd spazio-backend && npm run build",
+    "start": "cd spazio-backend && npm start"
+  },
+  "dependencies": {
+    "typescript": "^6.0.0"
+  }
+}
