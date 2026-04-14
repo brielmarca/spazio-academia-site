@@ -25,9 +25,22 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-// Middleware JSON - deve vir antes do CORS
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Middleware JSON com tratamento de erros
+app.use((req, res, next) => {
+  express.json()(req, res, (err: any) => {
+    if (err) {
+      console.error('JSON parse error:', err.message);
+      return res.status(400).json({ error: 'Invalid JSON' });
+    }
+    next();
+  });
+});
+
+// Middleware para debug de requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
 
 // Middleware CORS
 app.use((req, res, next) => {
