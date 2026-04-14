@@ -1,6 +1,8 @@
 // src/services/auth.ts
 import { apiRequest } from './api';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+
 export interface User {
   id: number;
   name: string;
@@ -30,7 +32,7 @@ export interface RegisterInput {
  * Registrar novo usuário
  */
 export async function register(data: RegisterInput): Promise<AuthResponse> {
-  const response = await fetch('/api/auth/register', {
+  const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -50,7 +52,7 @@ export async function register(data: RegisterInput): Promise<AuthResponse> {
  * Login de usuário
  */
 export async function login(data: LoginInput): Promise<AuthResponse> {
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
