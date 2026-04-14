@@ -97,6 +97,17 @@ app.listen(PORT, async () => {
   }
 });
 
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Rota não encontrada', path: req.path });
+});
+
+// Error handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Erro:', err);
+  res.status(500).json({ error: err.message || 'Erro interno' });
+});
+
 // Graceful shutdown
 process.on('SIGINT', async () => {
   await prisma.$disconnect();
