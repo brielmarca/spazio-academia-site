@@ -102,6 +102,11 @@ app.listen(PORT, async () => {
     await prisma.$connect();
     console.log('✅ Banco de dados conectado');
     
+    // Criar tabelas se não existirem
+    await prisma.$executeRaw`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    await prisma.$connect();
+    console.log('✅ Tabelas verificadas');
+    
     // Executar seed
     await seedDefaultPlans();
     await seedDefaultTrainers();
