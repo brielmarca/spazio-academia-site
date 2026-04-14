@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: spazio-backend
+    env: node
+    region: oregon
+    buildCommand: npm install && npx prisma generate --schema=./prisma/schema.prisma && npx tsc
+    startCommand: node dist/main/server.js
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
