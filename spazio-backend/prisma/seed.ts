@@ -1,8 +1,32 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log('🌱 Iniciando seed...');
+
+  // Criar usuário admin se não existir
+  const adminEmail = 'admin@spazio.com';
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: adminEmail },
+  });
+
+  if (!existingAdmin) {
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    await prisma.user.create({
+      data: {
+        name: 'Administrador',
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'ADMIN',
+      },
+    });
+    console.log('✅ Usuário admin criado: admin@spazio.com / admin123');
+  } else {
+    console.log('✅ Usuário admin já existe');
+  }
+
   console.log('🌱 Iniciando seed de planos...');
 
   const plans = [
