@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  LEAD
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  EXPIRED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  LOST
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELED
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  phone         String?
+  password      String
+  role          Role           @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relacionamentos
+  subscriptions Subscription[]
+  appointments  Appointment[]
+}
+
+model Plan {
+  id               Int            @id @default(autoincrement())
+  name             String         // musculacao, pilates, funcional, combo
+  displayName      String         // Nome amigável para exibir
+  description      String?
+  price            Float          // Preço em centavos (ex: 29900 = R$ 299,00)
+  abacatepayPlanId String?        // ID do plano no AbacatePay
+  isActive         Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  // Relacionamentos
+  subscriptions    Subscription[]
+}
+
+model Subscription {
+  id                       Int                @id @default(autoincrement())
+  userId                   Int
+  planId                   Int
+  abacatepayCustomerId     String?            // ID do cliente no AbacatePay
+  abacatepaySubscriptionId String?            // ID da assinatura no AbacatePay
+  status                   SubscriptionStatus @default(PENDING)
+  currentPeriodStart       DateTime?
+  currentPeriodEnd         DateTime?
+  cancelAtPeriodEnd        Boolean            @default(false)
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+
+  // Relacionamentos
+  user                     User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                     Plan               @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([abacatepaySubscriptionId])
+}
+
+model Trainer {
+  id          Int           @id @default(autoincrement())
+  name        String
+  role        String
+  bio         String?
+  image       String?
+  specialties String        @default("") // Separado por vírgulas: musculacao,funcional
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relacionamentos
+  availabilities Availability[]
+  appointments  Appointment[]
+
+  @@index([isActive])
+}
+
+model Availability {
+  id         Int      @id @default(autoincrement())
+  trainerId  Int
+  dayOfWeek  Int      // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+  startTime  String   // Horário de início: "08:00"
+  endTime    String   // Horário de fim: "12:00"
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relacionamentos
+  trainer    Trainer  @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+
+  @@index([trainerId, dayOfWeek, isActive])
+}
+
+model Appointment {
+  id          Int              @id @default(autoincrement())
+  userId      Int
+  trainerId   Int
+  date        DateTime         // Data e hora do agendamento
+  duration    Int              @default(60) // Duração em minutos
+  notes       String?
+  status      AppointmentStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relacionamentos
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainer     Trainer          @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([trainerId])
+  @@index([date])
+}
+
+model Lead {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  email     String     @unique
+  telefone  String?
+  status    LeadStatus @default(NEW)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}

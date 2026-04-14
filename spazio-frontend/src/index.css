@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 25% 98%;
+    --foreground: 234 20% 30%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 234 20% 30%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 234 20% 30%;
+
+    --primary: 14 70% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 20% 94%;
+    --secondary-foreground: 234 20% 30%;
+
+    --muted: 30 15% 93%;
+    --muted-foreground: 234 10% 50%;
+
+    --accent: 14 70% 62%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 14 70% 62%;
+
+    --moss: 120 25% 35%;
+    --moss-light: 120 20% 45%;
+
+    --radius: 0.75rem;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Raleway', sans-serif;
+
+    --gradient-warm: linear-gradient(135deg, hsl(14 70% 62%), hsl(25 80% 55%));
+    --shadow-card: 0 4px 24px -4px hsl(234 20% 30% / 0.08);
+    --shadow-card-hover: 0 12px 32px -8px hsl(234 20% 30% / 0.15);
+  }
+
+  .dark {
+    --background: 234 18% 14%;
+    --foreground: 30 25% 98%;
+
+    --card: 234 18% 14%;
+    --card-foreground: 30 25% 98%;
+
+    --popover: 234 18% 14%;
+    --popover-foreground: 30 25% 98%;
+
+    --primary: 14 70% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 234 18% 18%;
+    --secondary-foreground: 30 25% 98%;
+
+    --muted: 234 18% 20%;
+    --muted-foreground: 30 25% 70%;
+
+    --accent: 14 70% 62%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 234 18% 25%;
+    --input: 234 18% 25%;
+    --ring: 14 70% 62%;
+
+    --moss: 120 25% 35%;
+    --moss-light: 120 20% 45%;
+
+    --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.3);
+    --shadow-card-hover: 0 12px 32px -8px hsl(0 0% 0% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+
+  .container-narrow {
+    @apply max-w-6xl mx-auto;
+  }
+}
