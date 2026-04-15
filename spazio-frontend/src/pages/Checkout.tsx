@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPrice } from '@/services/subscription';
-import { Loader2, CreditCard, QrCode, FileText, Copy, Check } from 'lucide-react';
+import { Loader2, CreditCard, QrCode, FileText, Copy, Check, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface Plan {
@@ -77,25 +77,25 @@ const Checkout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" />
+      <div className="min-h-screen bg-gradient-to-br from-spazio-dark via-gray-900 to-black flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-spazio-gold" />
       </div>
     );
   }
 
   if (paymentComplete) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
+      <div className="min-h-screen bg-gradient-to-br from-spazio-dark via-gray-900 to-black flex items-center justify-center p-4">
+        <Card className="max-w-md w-full bg-white/5 backdrop-blur-sm border-white/10">
           <CardContent className="pt-6 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check className="w-8 h-8 text-green-400" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Pagamento Confirmado!</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Pagamento Confirmado!</h2>
+            <p className="text-white/60 mb-6">
               Sua assinatura do plano {plan?.displayName} foi ativada com sucesso.
             </p>
-            <Button onClick={() => navigate('/')} className="w-full">
+            <Button onClick={() => navigate('/')} className="w-full bg-spazio-gold text-spazio-dark hover:bg-spazio-gold/90">
               Voltar para Início
             </Button>
           </CardContent>
@@ -105,9 +105,17 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-spazio-dark via-gray-900 to-black py-8">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Finalizar Assinatura</h1>
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate(-1)}
+          className="mb-4 pl-0 text-white/70 hover:text-spazio-gold hover:bg-transparent"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Button>
+        <h1 className="text-3xl font-bold text-white mb-8">Finalizar Assinatura</h1>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Order Summary */}
