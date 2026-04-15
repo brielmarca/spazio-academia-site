@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getDashboard, getProfessores, getClientes } from '@/services/contract';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Clock, GraduationCap, Calendar, Settings } from 'lucide-react';
+import { Users, Clock, GraduationCap, Calendar, Settings, ArrowLeft, Home } from 'lucide-react';
 
 interface DashboardData {
   totalHorasUsadas: number;
@@ -50,66 +50,76 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-spazio-dark via-gray-900 to-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Carregando dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-spazio-gold mx-auto mb-4"></div>
+          <p className="text-white/60">Carregando dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-spazio-dark via-gray-900 to-black py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
-          <p className="text-gray-600 mt-2">Visão geral do sistema</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Dashboard Admin</h1>
+            <p className="text-white/60 mt-2">Visão geral do sistema</p>
+          </div>
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/')}
+            className="text-white/70 hover:text-spazio-gold hover:bg-transparent"
+          >
+            <Home className="w-4 h-4 mr-2" />
+            Início
+          </Button>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Horas Usadas</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/60">Horas Usadas</CardTitle>
               <Clock className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{data?.totalHorasUsadas || 0}</div>
-              <p className="text-xs text-gray-500">Total consumido</p>
+              <p className="text-xs text-white/50">Total consumido</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Horas Disponíveis</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/60">Horas Disponíveis</CardTitle>
               <Calendar className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-green-600">{data?.totalHorasDisponiveis || 0}</div>
-              <p className="text-xs text-gray-500">Saldo total</p>
+              <p className="text-xs text-white/50">Saldo total</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Professores Ativos</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/60">Professores Ativos</CardTitle>
               <GraduationCap className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-blue-600">{data?.totalProfessores || 0}</div>
-              <p className="text-xs text-gray-500">Na plataforma</p>
+              <p className="text-xs text-white/50">Na plataforma</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Clientes Ativos</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/60">Clientes Ativos</CardTitle>
               <Users className="h-4 w-4 text-purple-500" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-purple-600">{data?.totalClientes || 0}</div>
-              <p className="text-xs text-gray-500">Com contrato</p>
+              <p className="text-xs text-white/50">Com contrato</p>
             </CardContent>
           </Card>
         </div>
@@ -129,14 +139,14 @@ const AdminDashboard = () => {
                 </Button>
               </div>
               {professores.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Nenhum professor cadastrado</p>
+                <p className="text-white/50 text-center py-4">Nenhum professor cadastrado</p>
               ) : (
                 <ul className="space-y-3">
                   {professores.map((prof) => (
-                    <li key={prof.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <li key={prof.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                       <div>
                         <p className="font-medium">{prof.name}</p>
-                        <p className="text-sm text-gray-500">{prof.email}</p>
+                        <p className="text-sm text-white/50">{prof.email}</p>
                       </div>
                       <Button variant="outline" size="sm" onClick={() => navigate(`/professor/${prof.id}`)}>
                         Ver Agenda
@@ -155,14 +165,14 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               {clientes.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Nenhum cliente cadastrado</p>
+                <p className="text-white/50 text-center py-4">Nenhum cliente cadastrado</p>
               ) : (
                 <ul className="space-y-3">
                   {clientes.slice(0, 5).map((cliente) => (
-                    <li key={cliente.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <li key={cliente.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                       <div>
                         <p className="font-medium">{cliente.name}</p>
-                        <p className="text-sm text-gray-500">{cliente.email}</p>
+                        <p className="text-sm text-white/50">{cliente.email}</p>
                       </div>
                       <Button variant="outline" size="sm">
                         Ver Contrato
@@ -182,17 +192,17 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             {data?.contratosAtivos.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">Nenhum contrato ativo</p>
+              <p className="text-white/50 text-center py-4">Nenhum contrato ativo</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Cliente</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Horas Totais</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Usadas</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Disponíveis</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-white/60">Cliente</th>
+                      <th className="text-left py-3 px-4 font-medium text-white/60">Horas Totais</th>
+                      <th className="text-left py-3 px-4 font-medium text-white/60">Usadas</th>
+                      <th className="text-left py-3 px-4 font-medium text-white/60">Disponíveis</th>
+                      <th className="text-left py-3 px-4 font-medium text-white/60">Status</th>
                     </tr>
                   </thead>
                   <tbody>
