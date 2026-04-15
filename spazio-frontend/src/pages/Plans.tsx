@@ -62,23 +62,8 @@ export default function Plans() {
   };
 
   const handleSubscribe = async (planId: number) => {
-    setSubscribing(planId);
-    setError('');
-    setSuccess('');
-
-    try {
-      const result = await createSubscription(planId);
-      setPaymentUrl(result.paymentUrl || result.checkoutUrl);
-      setSuccess('Assinatura criada! Redirecionando para o pagamento...');
-      setShowSuccessDialog(true);
-
-      // Recarregar dados
-      await loadData();
-    } catch (err: any) {
-      setError(err.message || 'Erro ao criar assinatura');
-    } finally {
-      setSubscribing(null);
-    }
+    // Redirect to checkout page instead of creating subscription directly
+    navigate(`/checkout?planId=${planId}`);
   };
 
   const handleLogout = () => {

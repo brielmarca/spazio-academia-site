@@ -11,7 +11,9 @@ import Trainers from "./pages/Trainers.tsx";
 import TrainerDetail from "./pages/TrainerDetail.tsx";
 import MyAppointments from "./pages/MyAppointments.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
+import AdminTrainers from "./pages/AdminTrainers.tsx";
 import ProfessorDashboard from "./pages/ProfessorDashboard.tsx";
+import Checkout from "./pages/Checkout.tsx";
 import { PrivateRoute } from "@/components/PrivateRoute";
 
 const queryClient = new QueryClient();
@@ -67,10 +69,26 @@ const App = () => (
             }
           />
           <Route
+            path="/admin/professores"
+            element={
+              <PrivateRoute>
+                <AdminTrainers />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/painel-professor"
             element={
               <PrivateRoute>
                 <ProfessorDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <PrivateRoute>
+                <Checkout />
               </PrivateRoute>
             }
           />

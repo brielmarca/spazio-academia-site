@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getDashboard, getProfessores, getClientes } from '@/services/contract';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Clock, GraduationCap, Calendar } from 'lucide-react';
+import { Users, Clock, GraduationCap, Calendar, Settings } from 'lucide-react';
 
 interface DashboardData {
   totalHorasUsadas: number;
@@ -122,6 +122,12 @@ const AdminDashboard = () => {
               <CardTitle className="text-lg">Professores</CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="flex justify-end mb-4">
+                <Button variant="outline" size="sm" onClick={() => navigate('/admin/professores')}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Gerenciar Horários
+                </Button>
+              </div>
               {professores.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">Nenhum professor cadastrado</p>
               ) : (

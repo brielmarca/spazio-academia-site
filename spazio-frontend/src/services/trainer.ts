@@ -18,6 +18,7 @@ export interface Availability {
   dayOfWeek: number;
   startTime: string;
   endTime: string;
+  isActive: boolean;
 }
 
 export interface TimeSlot {
@@ -38,6 +39,41 @@ export async function getAvailableSlots(
   date: string
 ): Promise<{ slots: TimeSlot[]; date: string }> {
   return apiRequest(`/trainers/${trainerId}/availability?date=${date}`);
+}
+
+export async function createAvailability(data: {
+  trainerId: number;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+}): Promise<{ availability: Availability }> {
+  return apiRequest(`/trainers/${data.trainerId}/availability`, {
+    method: 'POST',
+    body: JSON.stringify({
+      dayOfWeek: data.dayOfWeek,
+      startTime: data.startTime,
+      endTime: data.endTime,
+    }),
+  });
+}
+
+export async function deleteAvailability(id: number): Promise<{ message: string }> {
+  return apiRequest(`/trainers/availability/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function createTrainer(data: {
+  name: string;
+  role: string;
+  bio?: string;
+  image?: string;
+  specialties?: string;
+}): Promise<{ trainer: Trainer }> {
+  return apiRequest('/trainers', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 }
 
 export const dayNames = [
